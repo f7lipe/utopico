@@ -20,6 +20,7 @@ model User {
   createdAt   DateTime @updatedAt
   updatedAt   DateTime @updatedAt
 
+
   @@map("users")
 }
 
@@ -32,9 +33,9 @@ model Topic {
   links       Link[]
   geotags     Geotag[]
   files       File[]
-  related     Topic[]
   createdAt   DateTime @updatedAt
   updatedAt   DateTime @updatedAt
+
 
   @@map("topics")
 }
@@ -45,20 +46,24 @@ model Note {
   content     String
   topicId     Int
   topic       Topic @relation(fields: [topicId], references: [id])
-  createdAt   DateTime @updatedAt
-  updatedAt   DateTime @updatedAt
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 
   @@map("notes")
 }
 
 model Link {
   id          Int @id @default(autoincrement())
+
+  title       String
   url         String
   description String
   topicId     Int
   topic       Topic @relation(fields: [topicId], references: [id])
   createdAt   DateTime @updatedAt
   updatedAt   DateTime @updatedAt
+
 
   @@map("links")
 }
@@ -69,6 +74,7 @@ model Geotag {
   longitude   Float
   topicId     Int
   topic       Topic @relation(fields: [topicId], references: [id])
+
   createdAt   DateTime @updatedAt
   updatedAt   DateTime @updatedAt
 
@@ -78,15 +84,16 @@ model Geotag {
 model File {
   id          Int @id @default(autoincrement())
   name        String
+  path        String
   type        String
   size        Int
-  path        String
   topicId     Int
   topic       Topic @relation(fields: [topicId], references: [id])
-  createdAt   DateTime @updatedAt
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 
   @@map("files")
+
 }
 
 model RelatedTopic {
@@ -97,4 +104,5 @@ model RelatedTopic {
   relatedTopic Topic @relation(fields: [relatedTopicId], references: [id])
   createdAt   DateTime @updatedAt
   updatedAt   DateTime @updatedAt
+
 }
