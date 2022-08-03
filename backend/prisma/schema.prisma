@@ -96,13 +96,3 @@ model File {
 
 }
 
-model RelatedTopic {
-  id          Int @id @default(autoincrement())
-  topicId     Int
-  topic       Topic @relation(fields: [topicId], references: [id])
-  relatedTopicId Int
-  relatedTopic Topic @relation(fields: [relatedTopicId], references: [id])
-  createdAt   DateTime @updatedAt
-  updatedAt   DateTime @updatedAt
-
-}
