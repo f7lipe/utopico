@@ -17,8 +17,9 @@ model User {
   email       String
   password    String
   topics      Topic[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
+
 
   @@map("users")
 }
@@ -32,8 +33,9 @@ model Topic {
   links       Link[]
   geotags     Geotag[]
   files       File[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
+
 
   @@map("topics")
 }
@@ -44,6 +46,7 @@ model Note {
   content     String
   topicId     Int
   topic       Topic @relation(fields: [topicId], references: [id])
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
 
@@ -52,13 +55,15 @@ model Note {
 
 model Link {
   id          Int @id @default(autoincrement())
+
   title       String
   url         String
   description String
   topicId     Int
   topic       Topic @relation(fields: [topicId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
+
 
   @@map("links")
 }
@@ -69,8 +74,9 @@ model Geotag {
   longitude   Float
   topicId     Int
   topic       Topic @relation(fields: [topicId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
 
   @@map("geotags")
 }
@@ -87,4 +93,16 @@ model File {
   updatedAt   DateTime @default(now())
 
   @@map("files")
+
+}
+
+model RelatedTopic {
+  id          Int @id @default(autoincrement())
+  topicId     Int
+  topic       Topic @relation(fields: [topicId], references: [id])
+  relatedTopicId Int
+  relatedTopic Topic @relation(fields: [relatedTopicId], references: [id])
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
+
 }
