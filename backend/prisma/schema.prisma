@@ -9,3 +9,92 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+model User {
+  id          Int @id @default(autoincrement())
+  name        String
+  email       String
+  password    String
+  topics      Topic[]
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Topic {
+  id          Int @id @default(autoincrement())
+  name        String
+  ownerId     Int
+  owner       User @relation(fields: [ownerId], references: [id])
+  notes       Note[]
+  links       Link[]
+  geotags     Geotag[]
+  files       File[]
+  related     Topic[]
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
+
+  @@map("topics")
+}
+
+model Note {
+  id          Int @id @default(autoincrement())
+  title       String
+  content     String
+  topicId     Int
+  topic       Topic @relation(fields: [topicId], references: [id])
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
+
+  @@map("notes")
+}
+
+model Link {
+  id          Int @id @default(autoincrement())
+  url         String
+  description String
+  topicId     Int
+  topic       Topic @relation(fields: [topicId], references: [id])
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
+
+  @@map("links")
+}
+
+model Geotag {
+  id          Int @id @default(autoincrement())
+  latitude    Float
+  longitude   Float
+  topicId     Int
+  topic       Topic @relation(fields: [topicId], references: [id])
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
+
+  @@map("geotags")
+}
+
+model File {
+  id          Int @id @default(autoincrement())
+  name        String
+  type        String
+  size        Int
+  path        String
+  topicId     Int
+  topic       Topic @relation(fields: [topicId], references: [id])
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
+
+  @@map("files")
+}
+
+model RelatedTopic {
+  id          Int @id @default(autoincrement())
+  topicId     Int
+  topic       Topic @relation(fields: [topicId], references: [id])
+  relatedTopicId Int
+  relatedTopic Topic @relation(fields: [relatedTopicId], references: [id])
+  createdAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt
+}
