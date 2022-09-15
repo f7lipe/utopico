@@ -1,2 +1,1 @@
-# Utopico
- an application to save and connect information topics
+# More details coming soon
